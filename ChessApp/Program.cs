@@ -1,4 +1,4 @@
-﻿using CsvHelper;
+using CsvHelper;
 using System;
 using System.Collections.Generic;
 using System.IO;
@@ -10,17 +10,19 @@ namespace ChessApp
     {
         static void Main(string[] args)
         {
+            //Set up app reading and writing capability
             using (var streamReader = new StreamReader("../../games.csv"))
             using (var streamWriter = new StreamWriter("../../reorder.csv"))
             using (var reader = new CsvReader(streamReader))
             using (var writer = new CsvWriter(streamWriter))
             {
+
+                //Generate an in-memory list containing the rows of CSV data
                 reader.Configuration.RegisterClassMap<RowMap>();
-
-
                 List<Row> games = reader.GetRecords<Row>()
                     .ToList();
 
+                //User Interface
                 Console.WriteLine("Data stored in an in-memory list: Sort by...\n");
                 Console.WriteLine("\t1: Number of Turns");
                 Console.WriteLine("\t2: White rating");
@@ -28,11 +30,12 @@ namespace ChessApp
                 Console.WriteLine("\t4: Opening Name");
                 Console.WriteLine("\t5: Exit");
 
+                //Take user input
                 int caseSwitch;
                 String input = Console.ReadLine();
                 bool success = Int32.TryParse(input, out caseSwitch);
 
-                
+                //Check that input is valid
                 while (!success)
                 {
                     Console.WriteLine(input + " is not a valid input. Please enter an integer between 1 and 5.");
@@ -45,6 +48,7 @@ namespace ChessApp
                     }
                 }
 
+                //execute user-specified instruction
                 switch (caseSwitch - 1)
                 {
                     case 0:
